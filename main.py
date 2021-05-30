@@ -1,30 +1,31 @@
-from prediction import simulate_match
 from fetch_data import fetch_epl_data
+from prediction import create_poisson_model, simulate_match
 
-if __name__ == "__main__":
-    df = fetch_epl_data()
+df = fetch_epl_data()
 
-    upcoming_matches = [
-        ["Arsenal", "Brighton"],
-        ["Aston Villa", "Chelsea"],
-        ["Fulham", "Newcastle"],
-        ["Leeds", "West Brom"],
-        ["Leicester", "Tottenham"],
-        ["Liverpool", "Crystal Palace"],
-        ["Man City", "Everton"],
-        ["Sheffield United", "Burnley"],
-        ["West Ham", "Southampton"],
-        ["Wolves", "Man United"],
-    ]
+poisson_model = create_poisson_model(df)
 
-    for match in upcoming_matches:
-        home_team = match[0]
-        away_team = match[1]
+upcoming_matches = [
+    ["Arsenal", "Brighton"],
+    ["Aston Villa", "Chelsea"],
+    ["Fulham", "Newcastle"],
+    ["Leeds", "West Brom"],
+    ["Leicester", "Tottenham"],
+    ["Liverpool", "Crystal Palace"],
+    ["Man City", "Everton"],
+    ["Sheffield United", "Burnley"],
+    ["West Ham", "Southampton"],
+    ["Wolves", "Man United"],
+]
 
-        home_team_expected_goals, away_team_expected_goals = simulate_match(
-            home_team, away_team, df
-        )
+for match in upcoming_matches:
+    home_team = match[0]
+    away_team = match[1]
 
-        print(
-            f"{home_team} vs {away_team} {home_team_expected_goals}-{away_team_expected_goals}"
-        )
+    home_team_win_odds, draw_odds, away_team_win_odds = simulate_match(
+        poisson_model, home_team, away_team
+    )
+
+    print(
+        f"{home_team} {'%.2f' % home_team_win_odds}, X {'%.2f' % draw_odds}, {away_team} {'%.2f' % away_team_win_odds}"
+    )
