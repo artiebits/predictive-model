@@ -24,7 +24,7 @@ def simulate_match(poisson_model, home_team, away_team, max_goals=10):
     match_prediction = np.outer(np.array(team_pred[0]), np.array(team_pred[1]))
 
     odds_home_team_win = np.sum(np.tril(match_prediction, -1))
-    odds_away_team_win = np.sum(np.triu(match_prediction, -1))
+    odds_away_team_win = np.sum(np.triu(match_prediction, 1))
     odds_draw = np.sum(np.diag(match_prediction))
 
     return odds_home_team_win, odds_draw, odds_away_team_win
