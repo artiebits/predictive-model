@@ -1,31 +1,25 @@
-from fetch_data import fetch_epl_data
-from prediction import create_poisson_model, simulate_match
+import pandas as pd
+from data_preparation_functions import get_fixture_for_today
+from prediction_functions import create_model, weights_dc, simulate_match
 
-df = fetch_epl_data()
+countries = ["ENG", "ESP", "GER", "ITA", "FRA", "RUS"]
+predictions = pd.DataFrame()
 
-poisson_model = create_poisson_model(df)
-
-upcoming_matches = [
-    ["Arsenal", "Brighton"],
-    ["Aston Villa", "Chelsea"],
-    ["Fulham", "Newcastle"],
-    ["Leeds", "West Brom"],
-    ["Leicester", "Tottenham"],
-    ["Liverpool", "Crystal Palace"],
-    ["Man City", "Everton"],
-    ["Sheffield United", "Burnley"],
-    ["West Ham", "Southampton"],
-    ["Wolves", "Man United"],
-]
-
-for match in upcoming_matches:
-    home_team = match[0]
-    away_team = match[1]
-
-    home_team_win_odds, draw_odds, away_team_win_odds = simulate_match(
-        poisson_model, home_team, away_team
+for country in countries:
+    data = pd.read_csv(f"data/{country}.csv").assign(
+        Date=lambda df: pd.to_datetime(df.Date)
     )
 
-    print(
-        f"{home_team} {'%.2f' % home_team_win_odds}, X {'%.2f' % draw_odds}, {away_team} {'%.2f' % away_team_win_odds}"
+    my_weights = weights_dc(data.Date, xi=0.0019)
+
+    model = create_model(
+        data.Home, data.Away, data.HomeGoals, data.AwayGoals, my_weights
     )
+
+    fixture = get_fixture_for_today(country)
+
+    prediction = simulate_match(model, fixture.Home, fixture.Away)
+
+    predictions = predictions.append(prediction).reset_index(drop=True)
+
+predictions.to_csv("predictions.csv")
