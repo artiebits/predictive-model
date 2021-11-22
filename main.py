@@ -1,5 +1,5 @@
 import pandas as pd
-from data_preparation_functions import get_fixture_for_today
+from data_preparation_functions import clean_fixture, get_fixture_for_today
 from prediction_functions import create_model, weights_dc, simulate_match
 
 countries = ["ENG", "ESP", "GER", "ITA", "FRA", "RUS"]
@@ -17,6 +17,7 @@ for country in countries:
     )
 
     fixture = get_fixture_for_today(country)
+    fixture = clean_fixture(fixture, data)
 
     prediction = simulate_match(model, fixture.Home, fixture.Away)
 
