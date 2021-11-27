@@ -2,7 +2,7 @@ library(worldfootballR)
 library(lubridate)
 library(dplyr)
 
-countries <- c("ENG", "ESP", "GER", "ITA", "FRA", "RUS")
+countries <- c("ENG", "ESP", "GER", "ITA", "RUS")
 
 for (country in countries) {
   print(paste("Getting data for", country))

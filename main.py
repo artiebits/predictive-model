@@ -2,7 +2,7 @@ import pandas as pd
 from data_preparation_functions import clean_fixture, get_fixture_for_today
 from prediction_functions import create_model, weights_dc, simulate_match
 
-countries = ["ENG", "ESP", "GER", "ITA", "FRA", "RUS"]
+countries = ["ENG", "ESP", "GER", "ITA", "RUS"]
 predictions = pd.DataFrame()
 
 for country in countries:
