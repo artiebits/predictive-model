@@ -21,6 +21,6 @@ for country in countries:
 
     prediction = simulate_match(model, fixture.Home, fixture.Away)
 
-    predictions = predictions.append(prediction).reset_index(drop=True)
+    predictions = pd.concat([predictions, prediction], ignore_index=True)
 
 predictions.to_csv("predictions.csv")
