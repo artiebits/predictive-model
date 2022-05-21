@@ -82,10 +82,10 @@ def simulate_match(model, home_team, away_team, max_goals=6):
         btts = np.sum(matrix[1:, 1:])
         btts_no = 1 - np.sum(matrix[1:, 1:])
         over_2_5 = (
-                np.sum(matrix[2:])
-                + np.sum(matrix[:2, 2:])
-                - np.sum(matrix[2:3, 0])
-                - np.sum(matrix[0:1, 2])
+            np.sum(matrix[2:])
+            + np.sum(matrix[:2, 2:])
+            - np.sum(matrix[2:3, 0])
+            - np.sum(matrix[0:1, 2])
         )
         under_2_5 = np.sum(matrix[:2, :2]) + matrix.item((0, 2)) + matrix.item((2, 0))
 

@@ -1,8 +1,10 @@
 import pandas as pd
 from data_preparation_functions import clean_fixture, get_fixture_for_today
 from prediction_functions import create_model, weights_dc, simulate_match
+from suggest_bets import suggest_bets
 
 countries = ["ENG", "ESP", "GER", "ITA", "FRA"]
+
 predictions = pd.DataFrame()
 
 for country in countries:
@@ -23,4 +25,6 @@ for country in countries:
 
     predictions = pd.concat([predictions, prediction], ignore_index=True)
 
-predictions.to_csv("predictions.csv")
+predictions.to_csv("predictions.csv", index=False)
+
+suggest_bets(predictions, bankroll=1000)
