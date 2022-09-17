@@ -1,5 +1,6 @@
 import pandas as pd
-from data_preparation_functions import clean_fixture, get_fixture_for_today
+
+from data_preparation_functions import get_fixture_for_today
 from prediction_functions import create_model, weights_dc, simulate_match
 from suggest_bets import suggest_bets
 
@@ -18,8 +19,7 @@ for country in countries:
         data.Home, data.Away, data.HomeGoals, data.AwayGoals, my_weights
     )
 
-    fixture = get_fixture_for_today(country)
-    fixture = clean_fixture(fixture, data)
+    fixture = get_fixture_for_today(data)
 
     prediction = simulate_match(model, fixture.Home, fixture.Away)
 

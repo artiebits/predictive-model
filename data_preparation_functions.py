@@ -1,5 +1,4 @@
-import pandas as pd
-from datetime import datetime
+from datetime import date
 
 
 def is_team_has_historical_data(team, data):
@@ -19,9 +18,6 @@ def clean_fixture(fixture, data):
     return fixture
 
 
-def get_fixture_for_today(country_code):
-    fixture = pd.read_csv(f"data/{country_code}-fixture.csv").assign(
-        Date=lambda df: pd.to_datetime(df.Date)
-    )
-    today = datetime.now().date()
-    return fixture[fixture.Date.dt.date == today]
+def get_fixture_for_today(df):
+    today = date.today()
+    return df[df.Date.dt.date == today]
