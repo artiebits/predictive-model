@@ -21,7 +21,7 @@ for country in countries:
 
     fixture = get_fixture_for_today(data)
 
-    prediction = simulate_match(model, fixture.Home, fixture.Away)
+    prediction = simulate_match(model, fixture)
 
     predictions = pd.concat([predictions, prediction], ignore_index=True)
 

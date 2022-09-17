@@ -1,9 +1,10 @@
-import pandas as pd
+from datetime import datetime
+
 import numpy as np
+import pandas as pd
 import statsmodels.api as sm
 import statsmodels.formula.api as smf
 from scipy.stats import poisson
-from datetime import datetime
 
 
 def weights_dc(dates, xi=0.0019):
@@ -48,11 +49,12 @@ def create_model(home_team, away_team, home_goals, away_goals, weights=None):
     ).fit()
 
 
-def simulate_match(model, home_team, away_team, max_goals=6):
+def simulate_match(model, fixture, ignore_match_info=True, max_goals=6):
     df = pd.DataFrame()
 
-    home_team = home_team.values
-    away_team = away_team.values
+    home_team = fixture.Home.values
+    away_team = fixture.Away.values
+    dates = fixture.Date.values
 
     for i in range(0, len(home_team)):
         expg1 = model.predict(
@@ -80,7 +82,7 @@ def simulate_match(model, home_team, away_team, max_goals=6):
         draw = np.sum(np.diag(matrix))
         away_team_win = np.sum(np.triu(matrix, 1))
         btts = np.sum(matrix[1:, 1:])
-        btts_no = 1 - np.sum(matrix[1:, 1:])
+        btts_no = 1 - btts
         over_2_5 = (
             np.sum(matrix[2:])
             + np.sum(matrix[:2, 2:])
@@ -105,6 +107,13 @@ def simulate_match(model, home_team, away_team, max_goals=6):
             },
             index=[1],
         )
+
+        if not ignore_match_info:
+            temp_df["date"] = dates[i]
+            temp_df["competition"] = fixture.Competition_Name.values[i]
+            temp_df["country"] = fixture.Country.values[i]
+            temp_df["venue"] = fixture.Venue.values[i]
+            temp_df["referee"] = fixture.Referee.values[i]
 
         df = pd.concat([df, temp_df], ignore_index=True).round(2)
 

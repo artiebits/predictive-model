@@ -9,7 +9,6 @@ def clean_fixture(fixture, data):
     """
     Filter out matches if home or away team doesn't have historical data.
     """
-
     for index, row in fixture.iterrows():
         if not is_team_has_historical_data(
             row.Home, data
@@ -19,5 +18,4 @@ def clean_fixture(fixture, data):
 
 
 def get_fixture_for_today(df):
-    today = date.today()
-    return df[df.Date.dt.date == today]
+    return df[df.Date.dt.date == date.today()]
