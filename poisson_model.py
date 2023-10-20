@@ -1,6 +1,6 @@
 import pandas as pd
 
-from data_preparation_functions import get_today_matches
+from data_preparation_functions import get_matches_for_today, load_data
 from prediction_functions import (
     fit_model,
     calculates_weights,
@@ -9,22 +9,25 @@ from prediction_functions import (
 )
 from suggest_bets import suggest_bets
 
-countries = ["ENG", "ESP", "GER", "ITA", "FRA"]
+countries = ["ENG", "ESP", "GER", "ITA"]
 
 predictions = pd.DataFrame()
 
 for country in countries:
-    data = pd.read_csv(f"data/{country}.csv").assign(Date=lambda df: pd.to_datetime(df.Date))
+    data = load_data(f"fbref_data/{country}.csv")
 
     weights = calculates_weights(data.Date, xi=0.0019)
 
-    model_data = create_model_data(data.HomeTeam, data.AwayTeam, data.FTHG, data.FTAG)
+    model_data = create_model_data(data.Home, data.Away, data.HomeGoals, data.AwayGoals)
+
+    model_data["goals"] = model_data["goals"] .astype(int)
 
     model = fit_model(model_data, weights)
 
-    fixture = get_today_matches(data)
+    fixture = load_data(f"fbref_data/{country}-fixture.csv")
+    fixture = get_matches_for_today(fixture)
 
-    prediction = predict(fixture.HomeTeam, fixture.AwayTeam, model)
+    prediction = predict(fixture.Home, fixture.Away, model)
 
     predictions = pd.concat([predictions, prediction], ignore_index=True)
 

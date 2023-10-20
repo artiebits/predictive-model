@@ -22,7 +22,7 @@ def load_data(path: str) -> pd.DataFrame:
     return pd.read_csv(path, parse_dates=["Date"])
 
 
-def get_today_matches(df: pd.DataFrame) -> pd.DataFrame:
+def get_matches_for_today(df: pd.DataFrame) -> pd.DataFrame:
     """Get the matches happening today."""
     today = date.today()
     return df[df["Date"].dt.date == today]

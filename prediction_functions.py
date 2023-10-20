@@ -37,11 +37,16 @@ def create_model_data(
 
 
 def fit_model(model_data: pd.DataFrame, weights_df=None) -> sm.regression.linear_model.RegressionResultsWrapper:
+    if weights_df is None:
+        model_weights = weights_df
+    else:
+        model_weights = pd.concat([weights_df, weights_df])
+
     return smf.glm(
         formula="goals ~ home + team + opponent",
         data=model_data,
         family=sm.families.Poisson(),
-        var_weights=weights_df,
+        var_weights=model_weights,
     ).fit()
 
 
