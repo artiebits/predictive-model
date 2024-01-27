@@ -2,13 +2,13 @@ library(worldfootballR)
 library(lubridate)
 library(dplyr)
 
-test_df <- read.csv("fbref_data/GER.csv")
+test_df <- read.csv("match_data/GER.csv")
 
 # Create a directory to store the individual result files
 dir.create("advanced_match_stats/GER", showWarnings = FALSE)
 
 # Iterate through each record in the dataset
-for (i in 50:nrow(test_df)) {
+for (i in 3992:1) {
   match_url <- test_df$MatchURL[i]
 
   # Call fb_advanced_match_stats
@@ -24,7 +24,6 @@ for (i in 50:nrow(test_df)) {
   write.csv(advanced_match_stats, file = filename, row.names = FALSE)
 
   print(paste0(filename, " downloaded ", i))
-#   "advanced_match_stats/GER/Nurnberg-Werder-Bremen-March-19-2011-Bundesliga.csv downloaded 482"
 }
 
 print("All data downloaded")
