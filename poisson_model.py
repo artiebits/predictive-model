@@ -1,13 +1,13 @@
 import pandas as pd
 
-from data_preparation_functions import get_matches_for_today, load_data
-from prediction_functions import (
+from utils.data_preparation_functions import get_matches_for_today, load_data
+from utils.prediction_functions import (
     fit_model,
     calculates_weights,
     create_model_data,
     predict,
 )
-from suggest_bets import suggest_bets
+from utils.suggest_bets import suggest_bets
 
 countries = ["ENG", "ESP", "GER", "ITA"]
 

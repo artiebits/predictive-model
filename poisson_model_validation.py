@@ -3,8 +3,8 @@ import pandas as pd
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 
-from data_preparation_functions import load_data
-from prediction_functions import (
+from utils.data_preparation_functions import load_data
+from utils.prediction_functions import (
     create_model_data,
     fit_model,
     calculates_weights,
@@ -13,11 +13,11 @@ from prediction_functions import (
 
 data = load_data("match_data/ENG.csv")
 
-data = data[data["Date"] > "2021-08-13"]
-
 train_data, test_data = train_test_split(data, random_state=0)
 
-model_data = create_model_data(train_data.Home, train_data.Away, train_data.HomeGoals, train_data.AwayGoals)
+model_data = create_model_data(
+    train_data.Home, train_data.Away, train_data.HomeGoals, train_data.AwayGoals
+)
 
 weights = calculates_weights(train_data.Date)
 

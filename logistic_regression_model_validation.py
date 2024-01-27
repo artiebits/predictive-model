@@ -6,7 +6,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import cross_val_score, train_test_split
 from sklearn.preprocessing import StandardScaler, LabelEncoder
 
-from data_preparation_functions import load_data
+from utils.data_preparation_functions import load_data
 
 data = load_data("match_data/GER.csv")
 data = data[data["Date"] > "2021-10-01"]
