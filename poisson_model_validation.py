@@ -3,6 +3,7 @@ import pandas as pd
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 
+from data_preparation_functions import load_data
 from prediction_functions import (
     create_model_data,
     fit_model,
@@ -10,7 +11,9 @@ from prediction_functions import (
     predict,
 )
 
-data = pd.read_csv("match_data/ENG.csv").assign(Date=lambda df: pd.to_datetime(df.Date))
+data = load_data("match_data/ENG.csv")
+
+data = data[data["Date"] > "2021-08-13"]
 
 train_data, test_data = train_test_split(data, random_state=0)
 

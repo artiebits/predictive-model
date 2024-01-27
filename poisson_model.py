@@ -14,17 +14,17 @@ countries = ["ENG", "ESP", "GER", "ITA"]
 predictions = pd.DataFrame()
 
 for country in countries:
-    data = load_data(f"fbref_data/{country}.csv")
+    data = load_data(f"match_data/{country}.csv")
 
     weights = calculates_weights(data.Date, xi=0.0019)
 
     model_data = create_model_data(data.Home, data.Away, data.HomeGoals, data.AwayGoals)
 
-    model_data["goals"] = model_data["goals"] .astype(int)
+    model_data["goals"] = model_data["goals"].astype(int)
 
     model = fit_model(model_data, weights)
 
-    fixture = load_data(f"fbref_data/{country}-fixture.csv")
+    fixture = load_data(f"match_data/{country}-fixture.csv")
     fixture = get_matches_for_today(fixture)
 
     prediction = predict(fixture.Home, fixture.Away, model)
