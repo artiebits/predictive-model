@@ -24,3 +24,7 @@ def suggest_bets(report, bankroll, min_probability=0.6, team_or_draw_probability
         if row.away_team_win + row.draw >= team_or_draw_probability:
             message("Team2 or X", row.away_team_win + row.draw)
         print(" ")
+
+
+if __name__ == "__main__":
+    suggest_bets()

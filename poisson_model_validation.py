@@ -11,17 +11,19 @@ from utils.prediction_functions import (
     predict,
 )
 
-data = load_data("match_data/ENG.csv")
+data = load_data("match_data/GER.csv")
+
 
 train_data, test_data = train_test_split(data, random_state=0)
+
 
 model_data = create_model_data(
     train_data.Home, train_data.Away, train_data.HomeGoals, train_data.AwayGoals
 )
 
-weights = calculates_weights(train_data.Date)
+weights = calculates_weights(train_data.Date, xi=0.001)
 
-model = fit_model(model_data)
+model = fit_model(model_data, weights)
 
 predictions = predict(test_data.Home, test_data.Away, model)
 
